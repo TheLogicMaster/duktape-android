@@ -46,6 +46,8 @@ void initialize(JNIEnv* env, jclass type) {
 
 } // anonymous namespace
 
+uint duk_interrupted = 0;
+
 extern "C" {
 
 duk_int_t android__get_local_tzoffset(duk_double_t time) {
@@ -111,6 +113,7 @@ Java_com_squareup_duktape_Duktape_destroyContext(JNIEnv *env, jclass type, jlong
 JNIEXPORT jobject JNICALL
 Java_com_squareup_duktape_Duktape_evaluate__JLjava_lang_String_2Ljava_lang_String_2(
     JNIEnv* env, jclass type, jlong context, jstring code, jstring fname) {
+    duk_interrupted = 0;
   DuktapeContext* duktape = reinterpret_cast<DuktapeContext*>(context);
   if (duktape == nullptr) {
     queueNullPointerException(env, "Null Duktape context - did you close your Duktape?");
@@ -124,6 +127,11 @@ Java_com_squareup_duktape_Duktape_evaluate__JLjava_lang_String_2Ljava_lang_Strin
     queueDuktapeException(env, e.what());
   }
   return nullptr;
+}
+
+JNIEXPORT void JNICALL
+Java_com_squareup_duktape_Duktape_stop(JNIEnv *env, jclass type) {
+    duk_interrupted = 1;
 }
 
 JNIEXPORT void JNICALL

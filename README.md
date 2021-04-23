@@ -1,3 +1,7 @@
+This fork has been modified to allow interrupting all running Duktape instances
+to prevent unstoppable user infinite loops for my game, 
+[Robot Recharge](https://github.com/TheLogicMaster/robot-recharge)
+
 Duktape Android
 ===============
 

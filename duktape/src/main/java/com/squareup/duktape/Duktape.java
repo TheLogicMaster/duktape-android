@@ -30,6 +30,10 @@ public final class Duktape implements Closeable {
     System.loadLibrary("duktape");
   }
 
+  public void interrupt() {
+    stop();
+  }
+
   /**
    * Create a new interpreter instance. Calls to this method <strong>must</strong> matched with
    * calls to {@link #close()} on the returned instance to avoid leaking native memory.
@@ -171,5 +175,6 @@ public final class Duktape implements Closeable {
   private native Object evaluate(long context, String sourceCode, String fileName);
   private native void set(long context, String name, Object object, Object[] methods);
   private native long get(long context, String name, Object[] methods);
+  private native void stop();
   private native Object call(long context, long instance, Object method, Object[] args);
 }
